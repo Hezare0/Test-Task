@@ -20,7 +20,7 @@ services:
       POSTGRES_PASSWORD: qwerty123
       POSTGRES_DB: TestTask
     ports:
-      - "15432:5432"
+      - "5432:5432"
     restart: unless-stopped
 
   pgadmin:

@@ -68,8 +68,8 @@ public class JwtService {
      * @return данные
      */
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolvers.apply(claims);
+            final Claims claims = extractAllClaims(token);
+            return claimsResolvers.apply(claims);
     }
 
     /**

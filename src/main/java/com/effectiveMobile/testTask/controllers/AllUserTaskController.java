@@ -28,6 +28,9 @@ public class AllUserTaskController {
 
     @Operation(summary = "Получение данных всех задач текущего пользователя")
     @GetMapping("/get-task")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "401", description = "Авторизуйтесь под другим пользователем")
+    })
     public GetListOfTasksResponse getAllTask(@RequestParam(value = "offset", defaultValue = "0") @Min(0) @Parameter(description = "Текущая страница") Integer offset,
                                              @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) @Parameter(description = "Количество задач на странице") Integer limit) {
         return taskService.getAllTask(SecurityContextHolder.getContext().getAuthentication().getName(), offset, limit);
@@ -35,6 +38,10 @@ public class AllUserTaskController {
 
     @Operation(summary = "Получение данных всех задач пользователя")
     @GetMapping("/get-task/{userEmail}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "401", description = "Авторизуйтесь под другим пользователем"),
+            @ApiResponse(responseCode = "404", description = "Пользователь не найден")
+    })
     public GetListOfTasksResponse getAllTask(@PathVariable @Parameter(description = "Email пользователя", required = true) String userEmail,
                                              @RequestParam(value = "offset", defaultValue = "0") @Min(0) @Parameter(description = "Текущая страница") Integer offset,
                                              @RequestParam(value = "limit", defaultValue = "20") @Min(1) @Max(100) @Parameter(description = "Количество задач на странице") Integer limit) {
@@ -45,6 +52,7 @@ public class AllUserTaskController {
     @PutMapping("/update-task/{taskId}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
+            @ApiResponse(responseCode = "401", description = "Авторизуйтесь под другим пользователем"),
             @ApiResponse(responseCode = "404", description = "Задача не существует")})
     public TaskResponse updateTask(@RequestBody @Valid UserUpdateTaskRequest request, @PathVariable @Parameter(description = "Идентификатор задачи", required = true) Long taskId) {
         return taskService.updateTask(request, taskId);
